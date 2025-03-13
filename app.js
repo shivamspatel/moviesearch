@@ -80,7 +80,7 @@ async function fetchMovies(searchTerm) {
 function updateMovieResults(data) {
   const moviesList = document.querySelector(".movies__list");
 
-  // clear current movies except for loading spinner
+  // clear current movies for loading spinner
   const loadingSpinner = document.querySelector(".movies__list--loading");
   const spinnerDisplay = loadingSpinner ? loadingSpinner.style.display : "none";
   moviesList.innerHTML = "";
