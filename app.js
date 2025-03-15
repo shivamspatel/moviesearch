@@ -54,36 +54,33 @@ if (searchIcon) {
 
 // Function to fetch movies from OMDb API
 async function fetchMovies(searchTerm) {
+    if (!searchTerm) return;
 
-  if (!searchTerm) return;
-
-
-  
-  
-// Show loading spinner
-  const loadingSpinner = document.querySelector('.movies__list--loading');
-  if (loadingSpinner) {
-    loadingSpinner.style.display = 'block';
-  }
-  
-  try {
-    // Fetch data from OMDb API directly without variables
-    const response = await fetch(`https://www.omdbapi.com/?apikey=38d9770d&s=${encodeURIComponent(searchTerm)}&type=movie`);
-    const data = await response.json();
-    
-    // Update UI with search results
-    updateMovieResults(data);
-  } catch (error) {
-    console.error('Error fetching movie data:', error);
-  } 
-  finally {
-    // Hide loading spinner
+    // Clear current movies except for loading spinner
+    const moviesList = document.querySelector('.movies__list');
+    const loadingSpinner = document.querySelector('.movies__list--loading');
+    moviesList.innerHTML = ''; // Clear the movie list
     if (loadingSpinner) {
-      loadingSpinner.style.display = 'none';
+        moviesList.appendChild(loadingSpinner); // Add the loading spinner back
+        loadingSpinner.style.display = 'block'; // Show loading spinner
+    }
+
+    try {
+        // Fetch data from OMDb API directly without variables
+        const response = await fetch(`https://www.omdbapi.com/?apikey=38d9770d&s=${encodeURIComponent(searchTerm)}&type=movie`);
+        const data = await response.json();
+
+        // Update UI with search results
+        updateMovieResults(data);
+    } catch (error) {
+        console.error('Error fetching movie data:', error);
+    } finally {
+        // Hide loading spinner
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'none';
+        }
     }
 }
-}
-
 
 // Function to update movie list with API results
 function updateMovieResults(data) {
